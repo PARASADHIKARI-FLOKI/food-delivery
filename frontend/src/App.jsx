@@ -1,20 +1,30 @@
 import React from 'react'
-import Navbar from './components/Navbar'
-import { Route, Routes } from 'react-router-dom'
-import Home from './pages/Home/home'
-import Cart from './pages/Cart/Cart'
-import PlaceOrder from './pages/PlaceOrder/PlaceOrder'
+import Header from './components/Header'
+import { Routes,Route } from 'react-router-dom'
+import Home from './pages/Home'
+import Menu from './pages/Menu'
+import Contact from './pages/Contact'
+import Cart from './pages/Cart'
+import Login from './pages/Login'
+import PlaceOrder from './pages/PlaceOrder'
+import Order from './pages/Order'
+import Verify from './pages/Verify'
 
 const App = () => {
   return (
-    <div>
-      <Navbar/>
+    <main className='overflow-hidden bg-light text-[#404040]'>
+      <Header/>
       <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/cart' element={<Cart/>}/>
-        <Route path='/order' element={<PlaceOrder/>}/>
+        <Route path="/" element={<Home/>}/>
+        <Route path="/menu" element={<Menu/>}/>
+        <Route path="/contact" element={<Contact/>}/>
+        <Route path="/cart" element={<Cart/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/place-order" element={<PlaceOrder/>}/>
+        <Route path="/orders" element={<Order/>}/>
+        <Route path="/verify" element={<Verify/>}/>
       </Routes>
-    </div>
+    </main>
   )
 }
 
