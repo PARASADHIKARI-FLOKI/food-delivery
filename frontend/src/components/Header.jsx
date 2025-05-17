@@ -59,17 +59,27 @@ const Header = () => {
       </div>
 
       {/* Slide-in Mobile Menu */}
-      <div className={`xl:hidden fixed top-0 left-0 w-3/4 max-w-xs h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        {/* Close Button */}
-        <div className="flex justify-end p-4">
-          <button onClick={toggleMenu} className="text-2xl text-gray-600 hover:text-black">
-            <FaRegWindowClose />
-          </button>
-        </div>
-
-        {/* Navbar Links */}
-        <Navbar toggleMenu={toggleMenu} containerStyles="flex flex-col gap-4 px-4" />
+<div className={`xl:hidden fixed top-0 left-0 w-3/4 max-w-xs h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+  {/* Top Bar: Logo + Close Button */}
+  <div className="flex items-center justify-between px-4 py-3 border-b">
+    {/* Logo */}
+    <Link to="/" onClick={toggleMenu} className="flex items-center gap-1 text-xl font-semibold">
+      <div className="w-9 h-9 bg-green-700 text-white flex items-center justify-center rounded-full font-bold text-xl rotate-[345deg]">
+        F
       </div>
+      <span className="text-gray-800 font-semibold">oodLand</span>
+    </Link>
+
+    {/* Close Button */}
+    <button onClick={toggleMenu} className="text-2xl text-gray-600 hover:text-black cursor-pointer">
+      <FaRegWindowClose />
+    </button>
+  </div>
+
+  {/* Navbar Links */}
+  <Navbar toggleMenu={toggleMenu} containerStyles="flex flex-col gap-4 px-4 mt-4" />
+</div>
+
 
       {/* Overlay Background */}
       {menuOpen && (
