@@ -17,9 +17,9 @@ const PopularFoods = () => {
   useEffect(() => {
     const data = foods.filter((item) => item.popular);
     setPopularFoods(data.slice(0, 6));
-  });
+  },[foods]);
   return (
-    <section>
+    <section className="mx-auto max-w-[1440px] px-6 lg:px-12 pt-16">
       <Title
         title1={"POPULAR"}
         title2={"FOODS"}
