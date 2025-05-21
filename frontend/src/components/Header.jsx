@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import { RiShoppingBasketLine, RiUserLine } from 'react-icons/ri';
 import { CgMenuLeft } from 'react-icons/cg';
 import { FaRegWindowClose } from 'react-icons/fa';
+import { ShopContext } from '../context/ShopContext';
 
 const Header = () => {
+  const {getCartCount}= useContext(ShopContext)
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -37,7 +39,7 @@ const Header = () => {
           {/* Cart */}
           <Link to="/cart" className="relative flex items-center text-xl">
             <RiShoppingBasketLine />
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">0</span>
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">{getCartCount()}</span>
           </Link>
 
           {/* Login */}

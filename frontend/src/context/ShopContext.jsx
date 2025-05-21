@@ -1,22 +1,64 @@
-import React ,{createContext} from 'react'
-import {foods} from '../assets/data'
-import { useNavigate } from 'react-router-dom'
+import React, { createContext, useEffect, useState } from "react";
+import { foods } from "../assets/data";
+import { useNavigate } from "react-router-dom";
 
-
-export const ShopContext=createContext()
+export const ShopContext = createContext();
 
 const ShopContextProvider = (props) => {
+  const currency = `$`;
+  const delivery_charges = 10;
+  const navigate = useNavigate();
+  const [cartItems, setCartItems] = useState({});
 
-    const currency=`$`
-    const delivery_charges=10
-    const navigate =useNavigate()
+  //adding items to cart
+  const addToCart = async (itemId, size) => {
+    let cartData = structuredClone(cartItems);
 
-    const contextValue={foods, currency,delivery_charges,navigate}
+    if (cartData[itemId]) {
+      if (cartData[itemId][size]) {
+        cartData[itemId][size] += 1;
+      } else {
+        cartData[itemId][size] = 1;
+      }
+    } else {
+      cartData[itemId] = {};
+      cartData[itemId][size] = 1;
+    }
+    setCartItems(cartData);
+  };
+
+  // getting total cart count
+  const getCartCount = () => {
+    let totalCount = 0;
+    for (const items in cartItems) {
+      for (const item in cartItems[items]) {
+        try {
+          if (cartItems[items][item] > 0) {
+            totalCount += cartItems[items][item];
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+    return totalCount;
+  };
+
+ 
+
+  const contextValue = {
+    foods,
+    currency,
+    delivery_charges,
+    navigate,
+    addToCart,
+    getCartCount,
+  };
   return (
     <ShopContext.Provider value={contextValue}>
-        {props.children}
+      {props.children}
     </ShopContext.Provider>
-  )
-}
+  );
+};
 
-export default ShopContextProvider
+export default ShopContextProvider;

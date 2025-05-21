@@ -4,7 +4,7 @@ import { TbShoppingBagPlus } from "react-icons/tb";
 import { ShopContext } from "../context/ShopContext";
 
 const Item = ({ food }) => {
-  const { currency } = useContext(ShopContext);
+  const { currency,addToCart} = useContext(ShopContext);
   const [size, setSize] = useState(food.sizes[0]); // default size
   return (
     <div>
@@ -51,14 +51,14 @@ const Item = ({ food }) => {
                     key={i}
                     onClick={() => setSize(item)} // to update selected size
                     className={`${
-                      item === size ? "ring-2 ring-[#217041]" : ""
-                    } h-6 w-6 bg-[#fffdf4] text-xs font-semibold rounded-sm`}
+                      item === size ? "ring-2 ring-[#217041] cursor-pointer" : ""
+                    } cursor-pointer h-6 w-6 bg-[#fffdf4] text-xs font-semibold rounded-sm`}
                   >
                     {item}
                   </button>
                 ))}
             </div>
-            <button className="flex items-center justify-center gap-x-1 text-[18px] bg-[#217041] text-white rounded-sm p-[3px]">
+            <button onClick={()=>addToCart(food._id, size)} className="flex items-center justify-center gap-x-1 text-[18px] bg-[#217041] text-white rounded-sm p-[3px] cursor-pointer">
               <TbShoppingBagPlus />
             </button>
           </div>
