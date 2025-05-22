@@ -44,7 +44,32 @@ const ShopContextProvider = (props) => {
     return totalCount;
   };
 
- 
+ // update the iten quantity
+ const updateQuantity=async(itemId, size,quantity)=>{
+  let cartData=structuredClone(cartItems)
+   
+  cartData[itemId][size] = quantity
+  setCartItems(cartData)
+ }
+
+ // Getting cart amount
+ const getCartAmount=()=>{
+  let totalAmount=0
+  for(const items in cartItems){
+    let filtered = foods.find((food)=>food._id === items)
+    for(const item in cartItems[items]){
+      try {
+      if(cartItems[items][item] > 0){
+           totalAmount += filtered.price[item]*cartItems[items][item]
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+    }
+  }
+  return totalAmount;
+ }
 
   const contextValue = {
     foods,
@@ -53,6 +78,9 @@ const ShopContextProvider = (props) => {
     navigate,
     addToCart,
     getCartCount,
+    cartItems,
+    updateQuantity,
+    getCartAmount
   };
   return (
     <ShopContext.Provider value={contextValue}>
