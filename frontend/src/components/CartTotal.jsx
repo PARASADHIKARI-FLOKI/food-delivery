@@ -5,7 +5,7 @@ import Title from "./Title";
 const CartTotal = () => {
   const { currency, delivery_charges, getCartAmount } = useContext(ShopContext);
   return (
-    <div className="">
+    <div className="mt-20">
       <Title
         title1={"Cart"}
         title2={"Total"}

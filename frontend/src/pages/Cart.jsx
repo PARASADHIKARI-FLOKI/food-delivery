@@ -4,6 +4,7 @@ import Title from "../components/Title";
 import { FaRegWindowClose } from "react-icons/fa";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import CartTotal from "../components/CartTotal";
+import Footer from "../components/Footer";
 const Cart = () => {
   const { foods, cartItems, currency, updateQuantity,navigate } =
     useContext(ShopContext);
@@ -118,6 +119,7 @@ const Cart = () => {
             </div>
           </div>
         </div>
+        <Footer/>
       </section>
     </div>
   );

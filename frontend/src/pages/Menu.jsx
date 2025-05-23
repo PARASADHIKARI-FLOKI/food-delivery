@@ -5,6 +5,7 @@ import { ShopContext } from "../context/ShopContext";
 import { categories } from "../assets/data";
 import Title from "../components/Title";
 import Item from "../components/Item";
+import Footer from "../components/Footer";
 
 const Menu = () => {
   const { foods } = useContext(ShopContext);
@@ -206,6 +207,7 @@ const Menu = () => {
             Next
           </button>
         </div>
+        <Footer/>
       </section>
     </div>
   );

@@ -12,7 +12,7 @@ const Footer = () => {
   return (
     <footer className="text-neutral-800 px-4 sm:px-6 lg:px-8 py-12 pb-4">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold mb-2">
+        <h2 className="text-3xl font-medium mb-2">
           Discover flavors that awaken your taste buds.
         </h2>
         <p className="text-sm text-neutral-600 mb-8 max-w-3xl">

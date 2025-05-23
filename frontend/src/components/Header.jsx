@@ -45,7 +45,7 @@ const Header = () => {
           {/* Login */}
           <Link
             to="/login"
-            className="flex items-center gap-1 text-sm font-medium border px-3 py-1 rounded hover:bg-gray-100 transition"
+            className="flex items-center gap-1 text-sm font-medium border border-gray-300 px-3 py-1 rounded-full hover:bg-gray-100 transition"
           >
             Login <RiUserLine />
           </Link>
