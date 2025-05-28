@@ -5,7 +5,6 @@ import productModel from "../models/productModel.js";
 const addProduct = async (req, res) => {
   try {
     const { name, description, category, prices, popular } = req.body;
-    console.log("Description:", description);
     const image = req.files?.image?.[0];
 
     let imageUrl;
@@ -26,10 +25,10 @@ const addProduct = async (req, res) => {
     const sizes = parsedPrices.map((item) => item.size);
     const productData = {
       name,
-  description:
-  description && description.trim() !== "" && description !== "undefined"
-    ? description
-    : "No description provided.",
+      description:
+        description && description.trim() !== "" && description !== "undefined"
+          ? description
+          : "No description provided.",
 
       category,
       price,
@@ -52,14 +51,38 @@ const addProduct = async (req, res) => {
 
 // function for remove a product
 
-const removeProduct = async (req, res) => {};
+const removeProduct = async (req, res) => {
+  try {
+    await productModel.findByIdAndDelete(req.body.id);
+    res.json({ success: true, message: "Food Removed" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 // function for list product
+const listProduct = async (req, res) => {
+  try {
+    const products = await productModel.find({});
+    res.json({ success: true, products });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
-const listProduct = async (req, res) => {};
+// function for getting single product information
 
-// function for single product information
-
-const singleProduct = async (req, res) => {};
+const singleProduct = async (req, res) => {
+  try {
+    const { productId } = req.body;
+    const product = await productModel.findById(productId);
+    res.json({ success: true, product });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 export { addProduct, removeProduct, singleProduct, listProduct };
