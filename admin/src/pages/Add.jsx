@@ -4,7 +4,7 @@ import { TbTrash } from "react-icons/tb";
 import { FaPlus } from "react-icons/fa6";
 import axios from "axios";
 
-const Add = ({token }) => {
+const Add = ({ token }) => {
   const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -24,6 +24,7 @@ const Add = ({token }) => {
   const removeSizePrice = (index) => {
     setPrices(prices.filter((_, i) => i !== index));
   };
+  
   const handlePriceChange = (index, field, value) => {
     const updatePrices = prices.map((item, i) =>
       i === index
@@ -51,9 +52,7 @@ const Add = ({token }) => {
         { headers: { token } }
       );
       console.log(response.data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   return (

@@ -29,7 +29,7 @@ const App = () => {
           {/* Main content */}
           <div className="flex-1 p-4">
             <Routes>
-              <Route path="/" element={<Add token={token} />} />
+              <Route path="/" element={<Add token={token}/>} />
               <Route path="/list" element={<List token={token} />} />
               <Route path="/orders" element={<Orders token={token} />} />
             </Routes>
