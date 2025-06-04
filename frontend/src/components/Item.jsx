@@ -70,9 +70,9 @@ const Item = ({ food }) => {
             </div>
             <hr className="h-4 w-[1px] bg-[#404040]/10 border-none" />
             <div className="flex items-center justify-center gap-1">
-              <h5>Price:</h5>
+              <h5 className="ml-6">Price:</h5>
               {/* Dynamicaally update the price */}
-              <p className="text-xs text-[#217041] relative top-[]1px">
+              <p className="text-xs text-[#217041] relative top-[1px]">
                 {currency}
                 {food.price[size]}
               </p>

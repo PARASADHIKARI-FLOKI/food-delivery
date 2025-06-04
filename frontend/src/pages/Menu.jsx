@@ -19,23 +19,29 @@ const Menu = () => {
   const itemsPerPage = 10;
 
   const toggleFilter = (value, setState) => {
+    const newValue = value.toLowerCase().trim();
     setState((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
+      prev.includes(newValue)
+        ? prev.filter((item) => item !== newValue)
+        : [...prev, newValue]
     );
   };
 
   const applyFilters = () => {
     let filtered = [...foods];
+
     if (search) {
       filtered = filtered.filter((food) =>
         food.name.toLowerCase().includes(search.toLowerCase())
       );
     }
+
     if (category.length) {
-      filtered = filtered.filter((food) => category.includes(food.category));
+      filtered = filtered.filter((food) =>
+        category.includes(food.category.toLowerCase().trim())
+      );
     }
+
     return filtered;
   };
 
@@ -46,13 +52,13 @@ const Menu = () => {
         return sortedFoods.sort((a, b) => {
           const aPrice = Object.values(a.price)[0];
           const bPrice = Object.values(b.price)[0];
-          return aPrice - bPrice; // sort in ascending order
+          return aPrice - bPrice;
         });
       case "high":
         return sortedFoods.sort((a, b) => {
           const aPrice = Object.values(a.price)[0];
           const bPrice = Object.values(b.price)[0];
-          return bPrice - aPrice;// sort in desending order
+          return bPrice - aPrice;
         });
       default:
         return sortedFoods;
@@ -64,10 +70,12 @@ const Menu = () => {
   };
 
   useEffect(() => {
-    let filtered = applyFilters();
-    let sorted = applySorting(filtered);
-    setFilteredFoods(sorted);
-    setCurrentPage(1);
+    if (foods.length > 0) {
+      const filtered = applyFilters();
+      const sorted = applySorting(filtered);
+      setFilteredFoods(sorted);
+      setCurrentPage(1);
+    }
   }, [category, sortType, foods, search]);
 
   const getPaginatedFoods = () => {
@@ -109,7 +117,7 @@ const Menu = () => {
             <h3 className="text-sm sm:text-base md:text-lg mb-4 font-bold hidden sm:flex">
               Select by Category
             </h3>
-            <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center sm:justify-start gap-x-4 sm:gap-x-6 gap-y-4">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center sm:justify-start gap-x-4 sm:gap-x-6 gap-y-4 ">
               {categories.map((cat) => (
                 <label key={cat.name} className="relative cursor-pointer">
                   <input
@@ -124,7 +132,7 @@ const Menu = () => {
                       alt={cat.name}
                       className="object-cover h-12 w-12 rounded-full"
                     />
-                    <span className="text-sm  sm:text-base font-medium text-gray-800 peer-checked:underline peer-checked:text-green-600">
+                    <span className="text-sm sm:text-base font-medium text-gray-800 peer-checked:underline peer-checked:text-green-600">
                       {cat.name}
                     </span>
                   </div>
@@ -136,7 +144,6 @@ const Menu = () => {
 
         {/* 🍽️ Food Section */}
         <div className="mt-10 space-y-6">
-          {/* Title and Sort */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <Title
               title1="Food"
@@ -174,7 +181,7 @@ const Menu = () => {
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((prev) => prev - 1)}
             className={`text-sm font-semibold bg-[#217041] text-white px-5 py-2 rounded-full transition-all cursor-pointer ${
-              currentPage === 1 && "opacity-50 cursor-not-allowed"
+              currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
             Previous
@@ -201,13 +208,13 @@ const Menu = () => {
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((prev) => prev + 1)}
             className={`text-sm font-semibold bg-[#217041] text-white px-5 py-2 rounded-full transition-all cursor-pointer ${
-              currentPage === totalPages && "opacity-50 cursor-not-allowed"
+              currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
             Next
           </button>
         </div>
-        <Footer/>
+        <Footer />
       </section>
     </div>
   );

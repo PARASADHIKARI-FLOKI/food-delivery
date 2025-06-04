@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
-import { foods } from "../assets/data";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export const ShopContext = createContext();
 
@@ -9,8 +10,8 @@ const ShopContextProvider = (props) => {
   const delivery_charges = 10;
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState({});
+  const [foods, setFoods] = useState([]);
 
-  //adding items to cart
   const addToCart = async (itemId, size) => {
     let cartData = structuredClone(cartItems);
 
@@ -27,7 +28,6 @@ const ShopContextProvider = (props) => {
     setCartItems(cartData);
   };
 
-  // getting total cart count
   const getCartCount = () => {
     let totalCount = 0;
     for (const items in cartItems) {
@@ -44,32 +44,46 @@ const ShopContextProvider = (props) => {
     return totalCount;
   };
 
- // update the iten quantity
- const updateQuantity=async(itemId, size,quantity)=>{
-  let cartData=structuredClone(cartItems)
-   
-  cartData[itemId][size] = quantity
-  setCartItems(cartData)
- }
+  const updateQuantity = async (itemId, size, quantity) => {
+    let cartData = structuredClone(cartItems);
+    cartData[itemId][size] = quantity;
+    setCartItems(cartData);
+  };
 
- // Getting cart amount
- const getCartAmount=()=>{
-  let totalAmount=0
-  for(const items in cartItems){
-    let filtered = foods.find((food)=>food._id === items)
-    for(const item in cartItems[items]){
-      try {
-      if(cartItems[items][item] > 0){
-           totalAmount += filtered.price[item]*cartItems[items][item]
+  const getCartAmount = () => {
+    let totalAmount = 0;
+    for (const items in cartItems) {
+      let filtered = foods.find((food) => food._id === items);
+      for (const item in cartItems[items]) {
+        try {
+          if (cartItems[items][item] > 0) {
+            totalAmount += filtered.price[item] * cartItems[items][item];
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+    return totalAmount;
+  };
+
+  const getProductsData = async () => {
+    try {
+      const response = await axios.get("http://localhost:5002/api/product/list");
+      if (response.data.success) {
+        setFoods(response.data.products);
+      } else {
+        toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      toast.error(error.message);
     }
+  };
 
-    }
-  }
-  return totalAmount;
- }
+  useEffect(() => {
+    getProductsData();
+  }, []);
 
   const contextValue = {
     foods,
@@ -80,8 +94,9 @@ const ShopContextProvider = (props) => {
     getCartCount,
     cartItems,
     updateQuantity,
-    getCartAmount
+    getCartAmount,
   };
+
   return (
     <ShopContext.Provider value={contextValue}>
       {props.children}
