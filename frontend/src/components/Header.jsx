@@ -44,7 +44,7 @@ const Header = () => {
         </div>
 
         {/* Right Icons */}
-        <div className="flex items-center gap-8 ">
+        <div className="flex items-center gap-8">
           {/* Cart */}
           <Link to="/cart" className="relative flex items-center text-xl">
             <RiShoppingBasketLine />
@@ -61,7 +61,14 @@ const Header = () => {
                 onClick={() => setShowLogout(prev => !prev)}
               />
               {showLogout && (
-                <div className="absolute right-0 mt-2 bg-white shadow-md rounded-md z-50">
+                <div className="absolute right-0 mt-2 bg-white shadow-md rounded-md z-50 w-32">
+                  <Link
+                    to="/orders"
+                    onClick={() => setShowLogout(false)}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                  >
+                    Orders
+                  </Link>
                   <button
                     onClick={logout}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"

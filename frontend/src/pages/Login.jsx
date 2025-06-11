@@ -3,16 +3,16 @@ import loginImg from "../assets/login.png";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { ShopContext } from "../context/ShopContext";
-import { Eye, EyeOff } from "lucide-react"; // Optional: You can use any icons you prefer
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
-  const { token, setToken, navigate,getUserCart } = useContext(ShopContext);
+  const { token, setToken, navigate, getUserCart } = useContext(ShopContext);
 
   const [currState, setCurrState] = useState("Login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // ✅ Toggle state
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -40,8 +40,7 @@ const Login = () => {
         if (response.data.success) {
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
-
-          await getuser(response.data.token)
+          await getUserCart(response.data.token); // ✅ Fixed line
           toast.success("Logged in successfully");
         } else {
           toast.error(response.data.message);
@@ -57,7 +56,7 @@ const Login = () => {
     if (token) {
       navigate("/");
     }
-  }, [token]);
+  }, [token, navigate]);
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -106,7 +105,6 @@ const Login = () => {
               />
             </div>
 
-            {/* ✅ Password with toggle */}
             <div>
               <label htmlFor="password" className="block mb-1 font-medium">
                 Password
