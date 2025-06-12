@@ -89,7 +89,7 @@ const PlaceOrder = () => {
   }
 
   return (
-    <section className="px-4 py-10 max-w-7xl mx-auto">
+    <section className="px-4 py-10 max-w-7xl mx-auto mt-20">
       <form onSubmit={onSubmitHandler}>
         <div className="flex flex-col lg:flex-row gap-10">
           {/* Left side - Delivery Info */}
