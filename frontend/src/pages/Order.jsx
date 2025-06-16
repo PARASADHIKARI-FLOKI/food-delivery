@@ -1,34 +1,29 @@
-import React from "react";
-import { useContext } from "react";
-import { ShopContext } from "../context/ShopContext";
-import { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
 import Footer from "../components/Footer";
 
 const Order = () => {
   const { token, currency } = useContext(ShopContext);
-
   const [orderData, setOrderData] = useState([]);
 
   const loadOrderData = async () => {
     try {
-      if (!token) {
-        return null;
-      }
+      if (!token) return;
+
       const response = await axios.post(
         "http://localhost:5002/api/order/userorders",
         {},
         { headers: { token } }
       );
-      //  console.log(response.data)
+
       if (response.data.success) {
         let allOrdersItem = [];
 
-        response.data.orders.map((order) => {
-          order.items.map((item) => {
+        response.data.orders.forEach((order) => {
+          order.items.forEach((item) => {
             item["status"] = order.status;
             item["payment"] = order.payment;
             item["paymentMethod"] = order.paymentMethod;
@@ -36,7 +31,7 @@ const Order = () => {
             allOrdersItem.push(item);
           });
         });
-        // console.log(allOrdersItem)
+
         setOrderData(allOrdersItem);
       }
     } catch (error) {
@@ -48,69 +43,81 @@ const Order = () => {
   useEffect(() => {
     loadOrderData();
   }, [token]);
+
   return (
-    <div className="mx-auto max-w-[1440px] px-6 lg:px-12 mt-24">
-      <div className="pt-6 pb-20">
-        {/* title */}
-        <Title title1={'Orders'} title2={'List'} title1Styles={'text-[24px] leading-tight md:text-[28px] md:leading-[1.3] mb-4 font-bold'}/>
-        {/* container */}
-        {
-          orderData.map((item,i)=>{
-            <div key={i} className="p-2 rounded-xl bg-[#ebf9dc] mt-2">
-              <div className="text-gray-700 flex flex-col gap-4">
-                <div className="flex gap-x-3 w-full">
-                  <div className=" flex items-center justify-center p-2 bg-[#fffdf4] rounded-lg">
-                  <img src={item.image} alt="" className="w-16" />
+    <div className="bg-[#fffdf4] pt-24 min-h-screen">
+      <div className="mx-auto max-w-[1440px] px-6 lg:px-12">
+        <div className="pt-6 pb-20">
+          {/* Title */}
+          <Title
+            title1={"Orders"}
+            title2={"List"}
+            title1Styles={
+              "text-[24px] leading-tight md:text-[28px] md:leading-[1.3] mb-4 font-bold"
+            }
+          />
+
+          {/* Orders List */}
+          {orderData.map((item, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between p-4 rounded-xl bg-[#ebf9dc] mt-2 "
+            >
+              {/* Image and Product Info */}
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 flex items-center justify-center bg-[#fffdf4] rounded-lg overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h5 className="text-sm font-semibold">{item.name}</h5>
+                  <div className="text-xs text-gray-700 mt-1 flex flex-wrap gap-x-3">
+                    <span className="font-semibold">
+                      <span>Price:</span>{" "}
+                      <span className="text-gray-500">{currency}{item.price[item.size]}</span>
+                    </span>
+                    <span className="font-semibold">
+                      <span>Quantity:</span>{" "}
+                      <span className="text-gray-500">{item.quantity}</span>
+                    </span>
+                    <span className="font-semibold">
+                      <span>Size:</span>{" "}
+                      <span className="text-gray-500">{item.size}</span>
+                    </span>
                   </div>
-                  {/* order info */}
-                  <div className="block w-full">
-                    <h5 className="text-[14px] md:text-[15px] mb-1 font-bold capitalize line-clamp-1">{item.name}</h5>
-                      <div className="flex gap-x-2 flex-col sm:flex-row sm:justify-between">
-                         {/* price quantity size date payment */}
-                         <div className="text-xs">
-                          <div className="flex items-center gap-x-2 sm:gap-x-3">
-                            <div className="flex items-center justify-center gap-x-2">
-                              <h5 className="text-[14px] font-[500]">Price:</h5>
-                              <p>{currency}{item.price[item.size]}</p>
-                            </div>
-                            <div className="flex items-center justify-center gap-x-2">
-                              <h5 className="text-[14px] font-[500]">Quantity:</h5>
-                              <p>{item.quantity}</p>
-                            </div>
-                            <div className="flex items-center justify-center gap-x-2">
-                              <h5 className="text-[14px] font-[500]">Size:</h5>
-                              <p>{item.size}</p>
-                            </div>
-                          </div>
-                         </div>
-                         <div className="flex items-center gap-x-2">
-                              <h5 className="text-[14px] font-[500]">Date:</h5>
-                              <p className="text-gray-400">{new Date(item.date).toDateString()}</p>
-                         </div>
-                         <div className="flex items-center gap-x-2">
-                          <h5 className="text-[14px] font-[500]">Payment:</h5>
-                         <p className="text-gray-400">{item.paymentMethod}</p>
-                         </div>
-                      </div>
-                  
-                  {/* status and button */}
-                  <div className="flex flex-col gap-2 sm:pr-4">
-                    <div className="flex items-center gap-2">
-                      <p className="min-w-2 h-2 rounded-full bg-green-500"></p>
-                      <p className="max-sm:text-xs">{item.status}</p>
-                    </div>
-                    <button onClick={loadOrderData} className="text-[14px] font-[500] bg-[#217041] text-white px-7 py-3.5 rounded-full transition-all !p-1 !text-xs">Track Order</button>
+                  <div className="text-xs mt-1">
+                    <span className="font-semibold">Date:</span>{""} <span className="text-gray-500">{new Date(item.date).toDateString()}</span>
                   </div>
+                  <div className="text-xs">
+                    <span className="font-semibold">Payment:</span>{''} <span className="text-gray-500">{item.paymentMethod}</span>
                   </div>
                 </div>
               </div>
+
+              {/* Status and Track Button */}
+              <div className="flex flex-col items-end justify-between gap-2">
+                <div className="flex items-center text-xs text-gray-700">
+                  <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                  {item.status}
+                </div>
+                <button
+                  onClick={loadOrderData}
+                  className="text-xs font-medium bg-green-700 hover:bg-green-800 text-white px-4 py-1.5 rounded-full transition cursor-pointer"
+                >
+                  Track Order
+                </button>
+              </div>
             </div>
-          })
-        }
+          ))}
+        </div>
+
+        <Footer />
       </div>
-      <Footer/>
     </div>
-  )
+  );
 };
 
 export default Order;

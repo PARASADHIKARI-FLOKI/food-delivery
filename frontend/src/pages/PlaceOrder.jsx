@@ -41,19 +41,18 @@ const PlaceOrder = () => {
 
     try {
       let orderItems = []
-
       for (const items in cartItems) {
         for (const item in cartItems[items]) {
           if (cartItems[items][item] > 0) {
             const itemInfo = structuredClone(
-              foods.find((food) => food.id === items)
+              foods.find(food => food._id === items)
             )
             if (itemInfo) {
               itemInfo.size = item
-              itemInfo.quntity = cartItems[items][item]
+              itemInfo.quantity = cartItems[items][item]
               orderItems.push(itemInfo)
             }
-          }
+          } 
         }
       }
 
