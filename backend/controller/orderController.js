@@ -40,9 +40,11 @@ const verifyStripe = async (req, res) => {
 //ALL ORDERS DATA FOR ADMIN PANEL
 const allOrders = async (req, res) => {
   try {
-    
+    const orders =await orderModel.find({})
+    res.json({success:true,orders})
   } catch (error) {
-
+ console.log(error)
+ res.json({success:false,message:error.message})
   }
 };
 
@@ -61,7 +63,13 @@ const userOrders = async (req, res) => {
 //UPDATE ORDER STATUS FROM ADMIN PANEL
 const updateStatus = async (req, res) => {
   try {
-  } catch (error) {}
+    const {orderId,status}=req.body
+    await orderModel.findByIdAndUpdate(orderId,{status})
+    res.json({success:true,message:"Status Updated"})
+  } catch (error) {
+   console.log(error)
+   res.json({success:false, message:error.message})
+  }
 };
 
 export {
