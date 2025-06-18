@@ -75,15 +75,23 @@ const PlaceOrder = () => {
           } else {
             toast.error(response.data.message)
           }
-          break
-
+          break;
+          //api fro stripe payment method
+          case "stripe":
+            const responeStripe=await axios.post('http://localhost:5002/api/order/stripe',orderData, {headers:{token}})
+             if(responeStripe.data.success){
+              const {session_url}=responeStripe.data
+                 window.location.replace(session_url)
+             }else{
+              toast.error(responeStripe.data.message)
+             }
+             break;
         default:
-          toast.error('Please select a valid payment method.')
           break
       }
     } catch (error) {
       console.error(error)
-      toast.error('Something went wrong while placing your order.')
+      toast.error(error.message)
     }
   }
 
